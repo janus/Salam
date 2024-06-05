@@ -2180,7 +2180,7 @@ ast_expression_t* led_plus_minus(parser_t* parser, token_t* token, ast_expressio
 
 	binary_op_expr->type = AST_EXPRESSION_BINARY;
 	CREATE_MEMORY_OBJECT(binary_op_expr->data.binary_op, ast_expression_binary_t, 1, "Error: led_plus_minus<binary_op> - Memory allocation error in %s:%d\n",  __FILE__, __LINE__);
-	binary_op_expr->data.binary_op->operator = strdup(token->value);
+	binary_op_expr->data.binary_op->operator = token->value;
 	binary_op_expr->data.binary_op->left = left;
 	binary_op_expr->data.binary_op->right = right;
 
@@ -2284,7 +2284,7 @@ ast_expression_t* nud_identifier(parser_t* parser, token_t* token)
 	if (parser_token_skip_ifhas(parser, TOKEN_TYPE_PARENTHESE_OPEN)) {
 		expr->type = AST_EXPRESSION_FUNCTION_CALL;
 		CREATE_MEMORY_OBJECT(expr->data.function_call, ast_function_call_t, 1, "Error: nud_identifier<function_call> - Memory allocation error in %s:%d\n",  __FILE__, __LINE__);
-		expr->data.function_call->name = strdup(token->value);
+		expr->data.function_call->name = token->value;
 		expr->data.function_call->arguments = array_create(3);
 
 		// Eating parser_expression until find ( token
@@ -2308,7 +2308,7 @@ ast_expression_t* nud_identifier(parser_t* parser, token_t* token)
 		expr->type = AST_EXPRESSION_IDENTIFIER;
 		CREATE_MEMORY_OBJECT(expr->data.identifier, ast_identifier_t, 1, "Error: nud_identifier<identifier> - Memory allocation error in %s:%d\n",  __FILE__, __LINE__);
 
-		expr->data.identifier->name = strdup(token->value);
+		expr->data.identifier->name = token->value;
 	}
 
 	return expr;
@@ -3142,7 +3142,7 @@ ast_literal_t* interpreter_expression_binary(ast_expression_t* expr, interpreter
 		size_t rightlen = strlen(right->string_value);
 
 		if (leftlen == 0 && rightlen == 0) {
-			res->string_value = strdup("");
+			res->string_value = "";
 		} else if (leftlen != 0 && rightlen != 0) {
 			size_t new_size = sizeof(char*) * (leftlen + rightlen + 1);
 			CREATE_MEMORY_OBJECT(res->string_value, char, new_size, "Error: interpreter_expression_binary<string_value 3> - Memory allocation error in %s:%d\n",  __FILE__, __LINE__);
